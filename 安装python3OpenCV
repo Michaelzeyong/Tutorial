@@ -1,0 +1,43 @@
+建议安装python3.6
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt update
+sudo apt install python3.6
+
+软链接 python3.6
+sudo mv /usr/bin/python3 /usr/bin/python3-old
+sudo ln -s /usr/bin/python3.6 /usr/bin/python3
+
+安装需要的依赖
+sudo apt-get install python3.6-dev
+pip3 install setuptools
+pip3 install cython
+pip3 install numpy
+
+
+1. 下载源码
+2. mkdir build
+3. cd build
+4. 只编译python3 不编译python2
+cmake -D CMAKE_BUILD_TYPE=RELEASE \
+-D PYTHON_DEFAULT_EXECUTABLE=/usr/bin/python3 \
+-D BUILD_opencv_python3=ON \
+-D BUILD_opencv_python2=OFF ..
+
+5. make -j6
+
+6. sudo make install
+   sudo ldconfig
+   
+7. terminal 验证
+    输入python3
+    import cv2
+    print(cv2.__version__)
+    不报错即为成功
+
+8. 在使用ROS时 会出现版本混乱的问题。
+    建议安装python2 的opencv
+    同时删除ROS 自带的opencv 的python包
+    /opt/ros/kinetic/lib/python2.7/dist-packages/
+    删除 cv2.so
+    
+    对于C++版本，可以在Cmake中指定oepncv位置，无需删除

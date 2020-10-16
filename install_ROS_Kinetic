@@ -1,0 +1,44 @@
+http://wiki.ros.org/kinetic/Installation/Ubuntu
+参考这个网址，为提高速度请使用清华源
+
+可能遇到的问题
+1. sudo rosdep init
+    无法下载
+    手动创建文件:
+    
+    /etc/ros/rosdep/sources.list.d/20-default.list
+    添加以下内容
+    # os-specific listings first
+    yaml https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/osx-homebrew.yaml osx
+
+    # generic
+    yaml https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/base.yaml
+    yaml https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/python.yaml
+    yaml https://raw.githubusercontent.com/ros/rosdistro/master/rosdep/ruby.yaml
+    gbpdistro https://raw.githubusercontent.com/ros/rosdistro/master/releases/fuerte.yaml fuerte
+
+    # newer distributions (Groovy, Hydro, ...) must not be listed anymore, they are being fetched from the rosdistro index.yaml instead
+    
+2. rosdep update 
+    time-out 或者根本无法连接
+    
+    1)首先修改hosts
+    
+        sudo gedit /etc/hosts
+    
+    添加:
+    
+        199.232.68.133 raw.githubusercontent.com
+    
+    IP地址可以在 www.ipaddress.com查询
+    重启服务
+    
+        sudo /etc/init.d/networking restart
+    
+    2)修改time限制时间
+    更改 
+    /usr/lib/python2.7/dist-packages/rosdep2/ 下的三个文件
+    sources_list.py、gbpdistro_support.py、rep3.py
+    
+        DOWNLOAD_TIMEOUT = 15.0，改为1500.0
+    

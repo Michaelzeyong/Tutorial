@@ -1,0 +1,72 @@
+部署 TensorRT 总结
+
+1. 环境：
+    Nvidia TX2      JetPack 3.3
+    系统            Ubuntu 16.04
+    TensorRT        4
+    Pytorch         1.1.0
+    Onnx            1.4.1
+
+2. 可用路线
+    1) DarkNet(Yolov3/Yolov3-tiny) ---> Onnx        --->       TensorRT
+    2) DarkNet(Yolov3/Yolov3-tiny) ---> Pytorch ---> Onnx ---> TensorRT
+    3) DarkNet(Yolov3/Yolov3-tiny) ---> caffe       --->       TensorRT
+
+3. 目前已掌握的部分
+    1) 使用官方源码的onnx模型，部署TensorRT      ( C++ 版本 )
+    2) 使用第三方caffe(YoloV3)模型，部署TensorRT ( C++ 版本 )
+    ***Notice: 目前TX2 平台的TensorRT 为C++版本， 无法使用Python版本，Github相关代码大部分为Python版本
+    ***相关的Github仓库:
+    https://github.com/zombie0117/yolov3-tiny-onnx-TensorRT
+    https://github.com/eriklindernoren/PyTorch-YOLOv3
+    
+    
+4. 遇到的问题
+    Darknet/pytorch 转 onnx 可以成功，但是会出现部分TensorRT不支持的算子
+    Darknet/Pytorch 转 Caffe 比较麻烦
+
+5. Error提示
+    1) 使用DarkNet ---> onnx --->TensorRT 时，读取Onnx模型错误
+                              |
+            convert_tensor 015_convolutional_lrelu
+            input: "015_convolutional_bn"
+            output: "015_convolutional_lrelu"
+            name: "015_convolutional_lrelu"
+            op_type: "LeakyRelu"
+            attribute {
+              name: "alpha"
+              f: 0.1
+              type: FLOAT
+            }
+            terminate called after throwing an instance of 'std::out_of_range'
+              what():  No converter registered for op type: LeakyRelu
+            Aborted (core dumped)
+        
+        对应 YoloV3-tiny 的一层卷积层，无法使用leakyRelu 算子
+        
+    2) 使用Pytorch ---> onnx ---> TensorRT 时，读取onnx模型错误
+                            |
+            Converter:: inserting node 212
+
+            Converter:: inserting node output
+
+            Converter:: _onnx_nodes.size() = 143
+            convert_tensor output
+            input: "212"
+            output: "output"
+            op_type: "Cast"
+            attribute {
+              name: "to"
+              i: 1
+              type: INT
+            }
+            terminate called after throwing an instance of 'std::out_of_range'
+              what():  No converter registered for op type: Cast
+            Aborted (core dumped)
+        
+        对应YoloV3-tiny最后一层的输出层
+    
+    *** 方法2 中也有LeakeyRelu 但是 可以正常转换，目前猜测是方法1) 中 attribute 中的type 有问题，
+        同理方法2 中的Cast 查阅手册是支持的，可能也是attribute 中的type问题
+    *** 在 github 有成功的仓库，基于Jetpack 4.4 Ubuntu18.04 的 tx2
+        所以产成这个问题的原因也有可能是 TensorRT 和 Pytorch 版本的问题。

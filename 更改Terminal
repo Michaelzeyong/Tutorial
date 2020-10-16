@@ -1,0 +1,8 @@
+1. 显示所有的Terminal
+    cat /etc/shells
+
+2. 更改为zsh
+    chsh -s /bin/zsh
+
+zsh 进入
+exit 退出

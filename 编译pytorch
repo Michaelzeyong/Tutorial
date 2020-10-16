@@ -1,0 +1,77 @@
+https://blog.csdn.net/sunshinefcx/article/details/103978651
+
+1. 下载源码
+    git clone  http://github.com/pytorch/pytorch  
+
+2. 安装依赖
+    sudo apt install libopenblas-dev libatlas-dev liblapack-dev
+    sudo apt install liblapacke-dev checkinstall # For OpenCV
+    sudo apt-get install python3-pip
+     
+    pip3 install --upgrade pip3
+    sudo apt-get install python3-dev
+     
+    sudo pip3 install numpy scipy
+    sudo pip3 install pyyaml
+    sudo pip3 install scikit-build
+    sudo apt-get -y install cmake
+    sudo apt install libffi-dev
+    sudo pip3 install cffi
+    
+3. CUDA 和CUDNN 的路径
+    sudo gedit ~/.bashrc
+    export CUDNN_LIB_DIR=/usr/lib/aarch64-linux-gnu
+    export CUDNN_INCLUDE_DIR=/usr/include
+    source ~/.bashrc
+    
+4. 更改pytorch 版本, 下载依赖
+    cd pytorch
+    git checkout v1.1.0a0
+    git submodule update --init --recursive
+    sudo pip3 install -U setuptools
+    sudo pip3 install -r requirements.txt
+
+5. 修改源码
+    pytorch/CMakeList.txt
+    NCCL -> 'off'       Line 98
+    
+    /pytorch/tools/setup_helpers/nccl.py
+    Change USE_SYSTEM_NCCL to 'False' on    line 13
+    Change NCCL to 'False' on line 78
+
+    torch/csrc/distributed/c10d/ddp.cpp
+    Comment nccl.h include on               line 6
+    Comment torch::cuda::nccl::reduce on    line 163
+
+5. 开启最大功率，编译
+    sudo nvpmodel -m 0         # 切换工作模式到最大
+    sudo  ~/jetson_clocks.sh   # 强制开启风扇最大转速 
+
+    sudo pip3 install scikit-build --user
+    sudo ldconfig
+
+    export USE_NCCL=0
+    export USE_DISTRIBUTED=1
+    export USE_OPENCV=ON
+    export USE_CUDNN=1
+    export USE_CUDA=1
+    export ONNX_ML=1 
+
+    sudo python3 setup.py bdist_wheel
+
+7. 编译长达4小时，编译完在pytorch/disk 下会生成whl文件，pip3 install 即可
+
+8. 安装其他
+    sudo apt clean
+    sudo apt-get install libjpeg-dev zlib1g-dev
+
+    cd ~
+    git clone https://github.com/python-pillow/Pillow.git
+    cd Pillow/
+    sudo python3 setup.py install
+    sudo apt-get install python3-sklearn
+    sudo pip3 install pandas Cython scikit-image 
+
+    sudo pip3 --no-cache-dir install torchvision
+    torchvision建议自己编译，pip下载的为0.2版本，0.3版本较为合适
+    

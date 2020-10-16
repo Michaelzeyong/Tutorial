@@ -1,0 +1,16 @@
+ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+ssh-copy-id nvidia@tegra-ubuntu
+
+desktop_hostname = nvidia@tegra-ubuntu
+laptop_hostname  = htsys@htsys-Lenovo
+
+tx2
+export ROS_HOSTNAME=tx2_IP
+export ROS_MASTER_URI=http://tx2_IP:11311
+
+
+laptop
+export ROS_HOSTNAME=laptop_IP
+export ROS_MASTER_URI=http://tx2_IP:11311
+
+ssh nvidia@192.168.1.104

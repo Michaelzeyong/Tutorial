@@ -1,0 +1,6 @@
+1. 最大频率
+    sudo  ~/jetson_clocks.sh
+2. 当前工作模式
+    sudo nvpmodel -q verbose
+3.修改工作模式
+    sudo nvpmodel -m 0

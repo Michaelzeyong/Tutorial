@@ -1,0 +1,137 @@
+rviz2
+ros2 node list
+ros2 node info /name
+ros2 topic echo /name
+
+python 版本新建node
+
+1. 
+# 新建工作空间
+mkdir -p workspacename/src
+cd workspacename
+colcon build
+
+python workspace structure
+workspaceName
+  |--build
+  |--install
+  |--log
+  |--src
+# 完成
+
+2.
+# create python package
+        cd workspacename/src
+        ros2 pkg create packagename
+        cd packagename
+        rm CMakeList.txt              # 删除Cmake文件
+        touch setup.py                |
+        touch setup.cgf               |--For python package
+        mkdir packagename             | # save code
+      
+    在src/packagename 文件夹下
+                |--setup.py
+                |--setup.cfg
+                |--package.xml
+                |--packagename
+
+    修改 setup.py setup.cfg package.xml
+    setup.py
+        from setuptools import setup
+
+        package_name = 'packagename'           # change here
+
+        setup(
+            name=package_name,
+            version='0.7.0',
+            packages=[package_name],
+            install_requires=['setuptools'],
+            zip_safe=True,
+            author='You',
+            author_email='you@youremail.com',
+            maintainer='YourFirstname Lastname',
+            maintainer_email='your@youremail.com',
+            keywords=['ROS'],
+            classifiers=[
+                'Intended Audience :: Developers',
+                'License :: OSI Approved :: Apache Software License',
+                'Programming Language :: Python',
+                'Topic :: Software Development',
+            ],
+            description='A simple ROS2 Python package',
+            license='Apache License, Version 2.0',
+            tests_require=['pytest'],
+            entry_points={
+                'console_scripts': [
+                    'nodename = packagename.nodename:main'  # change here demo is src/packagename/packagename/nodename.py
+                ],
+            },
+        )
+
+    setup.cfg
+        [develop]
+        script-dir=$base/lib/packagename
+        [install]
+        install-scripts=$base/lib/packagename
+
+    package.xml
+        <?xml version="1.0"?>
+        <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+        <package format="2">
+          <name>packagename</name>                  <!--change here-->
+          <version>0.0.0</version>
+          <description>TODO: Package description</description>
+          <maintainer email="nvidia@todo.todo">nvidia</maintainer>
+          <license>TODO: License declaration</license>
+          <exec_depend>rclpy</exec_depend>
+          <exec_depend>std_msgs</exec_depend>
+          <buildtool_depend>ament_cmake</buildtool_depend>
+
+          <test_depend>ament_lint_auto</test_depend>
+          <test_depend>ament_lint_common</test_depend>
+
+          <export>
+            <build_type>ament_python</build_type>    <!--change here-->
+          </export> 
+        </package>
+
+    在src/packagename/packagename/ 新建nodename.py 和__init__.py
+    touch nodename.py
+
+3. c++版本
+    cd workspace/src
+    ros2 pkg create  --build-type ament_cmake --cpp-node-name mynode mypackage
+    ros2 pkg create  --build-type ament_cmake --dependencies sensor_msgs rclcpp --cpp-node-name mynode mypackage
+    cd ..
+    colcon build 
+    source install/setup.zsh
+    ros2 run mypackage mynode
+    
+    添加opencv 以及 cv_bridge CMakeLists.txt
+    find_package(OpenCV REQUIRED)
+    find_package(cv_bridge REQUIRED)
+    ament_target_dependencies(
+      detect_tracking
+      "sensor_msgs"
+      "rclcpp"
+      "OpenCV"
+      "cv_bridge"
+    )
+    
+    colcon build --packages-select detect_tracking
+    ros2 run detect_tracking detect_tracking 
+
+
+cv_bridge
+/media/nvidia/3331-3133/zzy/MyROS/build/cv_bridge/ament_cmake_symlink_install/ament_cmake_symlink_install.cmake
+修改294行为：
+  execute_process(
+    COMMAND "cp"
+      "${absolute_file}"
+      "${symlink}"
+  )
+删除后面的判断语句
+
+
+进展 cv_bridge OpenCV均可用
+测试摄像头

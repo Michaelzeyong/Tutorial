@@ -1,0 +1,15 @@
+1. 通过Debians 安装
+    https://index.ros.org/doc/ros2/Installation/Crystal/Linux-Install-Debians/
+    安装ros2 与pc版基本一致
+    版本为选择ardent（16.04）
+
+2. 下载已经编译好的ROS2 安装 
+    https://index.ros.org/doc/ros2/Installation/Crystal/Linux-Install-Binary/
+
+3. 通过编译安装
+    https://index.ros.org/doc/ros2/Installation/Crystal/Linux-Development-Setup/
+    不好重新编译，失败
+
+### 通过1方式安装，没有 ros2 pkg create packagename 函数
+    通过2方式安装，有ros2 pkg create 但是只有CMakelists.txt 方法，需要手动更改为python
+    通过3方式安装，有完整的 ros2 pkg create 方法，但是编译失败

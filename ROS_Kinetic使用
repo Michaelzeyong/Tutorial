@@ -1,0 +1,42 @@
+ROS 使用
+Setup workspace
+1. Create your workspace
+    mkdir -p ~/robotics/src  //robotics = name of your workspace
+    cd ~/robotics/src
+    catkin_init_workspace
+    
+2. build the workspace
+    cd ~/robotics
+    catkin_make
+    
+3. Link workspace with ros
+    souce ~/robotics/devel/setup.bash   // or setup.zsh
+    
+4. create a node in workspace
+    cd ~/robotics/src
+    catkin_create_pkg first_node rospy std_msgs
+
+5. create our first node in Python
+    mkdir ~/robotics/src/first_node/script
+    gedit first_node.py
+
+6. building and running the node
+    chmod +x first_node.py
+    cd ~/robotics
+    catkin_make
+
+7. try
+    roscore
+    rosrun first_node first_node.py
+
+8. sudo apt-get install ros-kinetic-Package    
+
+9.  rosnode 
+    rostopic
+    rostopic type [topic]
+    rostopic echo [topic]
+
+
+删除ros自带的cv2.so (搜索删除)
+删除/opt/ros/kinetic/share/OpenCV-3.3.1-dev
+删除/opt/ros/kinetic/lib/aarch64-linux-gnu/libopencv-*
