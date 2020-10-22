@@ -18,7 +18,7 @@ Git 使用
     cd TestGit
     git init
     touch README.md
-    git add README.MD
+    git add README.MD / git add .
     git commit -m "first commit"
     git remote add origin git@github.com:Yourname/TestGit.git 
     git push -u origin master
@@ -28,3 +28,7 @@ git status
 强制覆盖本地
 git fetch --all
 git reset --hard origin/master
+
+git branch          查看当前分支
+git branch -a       查看所有分支
+git checkout -f origin/master   强制切换分支
