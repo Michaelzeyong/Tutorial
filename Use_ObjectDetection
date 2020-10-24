@@ -2,3 +2,17 @@ Github address: https://github.com/facebookresearch/maskrcnn-benchmark
 
 Architecture
 
+Dataset:
+    ObjectDetection
+           |
+       detection_code
+              |
+            datasets
+                |--annotations
+                |--coco
+                |--images
+                |--people_imgs
+
+Dataset Configuration:
+    ObjectDetection/detection_code/maskrcnn_benchmark/paths_catalog.py 
+        
