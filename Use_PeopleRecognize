@@ -1,0 +1,93 @@
+PeopleRecognize Project
+1.python test.py 评测结果
+    Race:           1522/1667, Acc: 0.9130173965206959
+    Suit:           1731/1845, Acc: 0.9382113821138212
+    capbadge:       1991/2002, Acc: 0.9945054945054945
+    shoulderbadge:  1991/2002, Acc: 0.9945054945054945
+    armband:        1982/2002, Acc: 0.99000999000999
+    collarbadge:    1997/2002, Acc: 0.9975024975024975
+
+2.How to use this project
+    python print_out.py 打印所有图片的结果
+    python print_out.py -timing=True 输出时间
+
+    python interface.py
+        classify_attr     输入：box 输出：结果
+        classify_person   输出：img 输出：结果
+    结果：
+    12 位的向量
+    [黑色人种、黄色人种、中东人种、白色人种、棕色人种、不详、军装、便装、帽徽、肩章、臂章、领徽]
+
+3.Validation
+    Quadro P4000 算力6.1
+    FPS ：105
+    内存耗用：
+    770-267 = 500mb
+
+4.Dataset
+    每条Json数据格式如下：
+    {'id': 139366, 'race': 'blackpeople', 'suit': 'militarysuit', 'capbadge': False, 'shoulderbadge': False, 'armband': False, 'collarbadge': False, 'file_name': '139366.jpg', 'gun': False, 'knife': False}
+    包含 id, race, suit, capbadge, shoulderbadge, armband, collarbadge, file_name, gun, knife
+
+    race: blackpeople, yellowpeople, middleeastpeople, whitepeople, brownpeople, unknown
+    suit: militarysuit, customsuit
+
+    race = ['blackpeople', 'yellowpeople', 'middleeastpeople', 'whitepeople', 'brownpeople', 'unknown']
+    suit = ['militarysuit', 'customsuit']
+    capbadge        = [True, False]
+    shoulderbadge   = [True, False]
+    armband         = [True, False]
+    collarbadge     = [True, False]
+    gun             = [True, False]
+    knife           = [True, False]
+
+    ***Problem****
+    interface.py 的返回值，缺少 gun和knife的返回值
+
+    Test Dataset
+    Category             Number
+    blackpeople          248  
+    yellowpeople         391  
+    middleeastpeople     259  
+    whitepeople          693  
+    brownpeople          76   
+    unknown              335  
+    militarysuit         950  
+    customsuit           895  
+    None                 157  
+    capbadge      True   120  
+    capbadge      False  1882 
+    shoulderbadge True   50   
+    shoulderbadge False  1952 
+    armband       True   128  
+    armband       False  1874 
+    collarbadge   True   78   
+    collarbadge   False  1924 
+    gun           True   633  
+    gun           False  1369 
+    knife         True   25   
+    knife         False  1977
+
+    Train Dataset
+    Category             Number
+    blackpeople          2732 
+    yellowpeople         13623
+    middleeastpeople     4049 
+    whitepeople          8727 
+    brownpeople          798  
+    unknown              7926 
+    militarysuit         16294
+    customsuit           17240
+    None                 4321 
+    capbadge      True   1756 
+    capbadge      False  36099
+    shoulderbadge True   911  
+    shoulderbadge False  36944
+    armband       True   1772 
+    armband       False  36083
+    collarbadge   True   994  
+    collarbadge   False  36861
+    gun           True   8540 
+    gun           False  29315
+    knife         True   1033 
+    knife         False  36822

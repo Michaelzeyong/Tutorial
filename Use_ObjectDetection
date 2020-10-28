@@ -2,7 +2,7 @@ Github address: https://github.com/facebookresearch/maskrcnn-benchmark
 
 Architecture
 
-Dataset:
+1.Dataset:
     ObjectDetection
            |
        detection_code
@@ -13,6 +13,596 @@ Dataset:
                 |--images
                 |--people_imgs
 
-Dataset Configuration:
-    ObjectDetection/detection_code/maskrcnn_benchmark/paths_catalog.py 
+2.Dataset Configuration:
+    ObjectDetection/detection_code/maskrcnn_benchmark/configs/paths_catalog.py 
         
+3.Output Path Setting:
+    ObjectDetection/detection_code/configs/Xception_FPN8.yaml
+    Change OUTPUT_DIR will change the save path of this Files as follow:
+    OUTPUT_DIR
+        |--config.yml               Configuration
+        |--label.json               Lable of The Dataset
+        |--last_checkoutpoint       Weight
+        |--log.txt                  The information of Terminal
+        |--model_number.pth         Weight
+
+Validation Dataset categories
+{   ID   Name                Image  Category
+    1    door                200       225  
+    2    window              208       306  
+    3    switch              224       270  
+    4    fireextinguisher    263       443  
+    5    light               200       259  
+    7    furniture           200       361  
+    10   sign                201       211  
+    14   car                 200       271  
+    15   gun                 623       737  
+    16   knife               396       500  
+    17   ammo                240       429  
+    18   people              1198      2002 
+    24   militarysuit        638       983  
+    25   customsuit          614       918 
+
+}
+
+Train Dataset Categories
+{   ID   Name                Image  Category
+    1    door                1155      1552      
+    2    window              1487      5348      
+    3    switch              3198      5594      
+    4    fireextinguisher    3998      8726      
+    5    light               878       2527      
+    7    furniture           775       1894      
+    10   sign                1208      1492      
+    14   car                 2346      4200      
+    15   gun                 6148      10485     
+    16   knife               3504      5191      
+    17   ammo                3267      13269     
+    18   people              11884     37870     
+    24   militarysuit        6645      17790     
+    25   customsuit          7712      18452 
+}
+
+
+
+4.Test the results
+    Command For test AP
+    cd detection_code
+    python  tools/test_net.py --config-file configs/Xception_FPN8.yaml TEST.IMS_PER_BATCH 16
+
+    Show The result of each label
+    ObjectDetection/detection_code/maskrcnn_benchmark/data/datasets/evaluation/coco/coco_eval.py 
+    Change 322 Line
+    for catId in coco_gt.getCatIds():
+        coco_eval = COCOeval(coco_gt, coco_dt, iou_type)
+        coco_eval.params.catIds = [catId]
+        print(catId)
+        coco_eval.evaluate()
+        coco_eval.accumulate()
+        coco_eval.summarize()
+
+
+    (1).For coco_54detect_val Dataset
+    1
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=0.14s).
+    Accumulating evaluation results...
+    DONE (t=0.03s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.373
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.577
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.439
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.236
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.375
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.412
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.498
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.498
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.233
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.501
+    2
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=0.18s).
+    Accumulating evaluation results...
+    DONE (t=0.05s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.354
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.563
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.396
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.263
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.152
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.381
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.335
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.484
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.488
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.550
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.369
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.502
+    3
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=0.14s).
+    Accumulating evaluation results...
+    DONE (t=0.03s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.661
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.953
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.826
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.662
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.593
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.723
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.723
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.723
+    4
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=0.14s).
+    Accumulating evaluation results...
+    DONE (t=0.03s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.805
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.990
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.959
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.404
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.805
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.510
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.851
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.851
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.400
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.853
+    5
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=0.15s).
+    Accumulating evaluation results...
+    DONE (t=0.03s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.271
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.511
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.264
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.179
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.327
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.311
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.446
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.451
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.389
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.483
+    7
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=0.22s).
+    Accumulating evaluation results...
+    DONE (t=0.03s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.271
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.494
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.292
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.313
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.269
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.237
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.378
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.381
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.394
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.379
+    10
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=0.09s).
+    Accumulating evaluation results...
+    DONE (t=0.02s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.802
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.970
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.932
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.693
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.779
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.851
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.790
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.831
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.831
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.759
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.813
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.872
+    14
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=0.15s).
+    Accumulating evaluation results...
+    DONE (t=0.03s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.691
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.920
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.815
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.034
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.700
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.575
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.737
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.737
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.067
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.745
+    15
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=0.37s).
+    Accumulating evaluation results...
+    DONE (t=0.09s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.565
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.893
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.678
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.104
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.575
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.535
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.634
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.634
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.344
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.641
+    16
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=0.20s).
+    Accumulating evaluation results...
+    DONE (t=0.04s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.767
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.975
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.900
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.767
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.654
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.804
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.804
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.804
+    17
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=0.21s).
+    Accumulating evaluation results...
+    DONE (t=0.05s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.719
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.961
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.866
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 1.000
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.719
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.438
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.759
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.761
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 1.000
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.760
+    18
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=0.65s).
+    Accumulating evaluation results...
+    DONE (t=0.10s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.696
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.956
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.829
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.257
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.697
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.468
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.754
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.754
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.386
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.755
+    24
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=0.38s).
+    Accumulating evaluation results...
+    DONE (t=0.08s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.608
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.934
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.712
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.247
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.611
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.454
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.689
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.689
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.400
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.691
+    25
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=0.38s).
+    Accumulating evaluation results...
+    DONE (t=0.13s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.528
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.876
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.578
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.341
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.533
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.440
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.635
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.635
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.436
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.638
+    2020-10-28 09:53:44,840 maskrcnn_benchmark.inference INFO: 
+    Task: bbox
+    AP, AP50, AP75, APs, APm, APl
+    0.5283, 0.8755, 0.5780, -1.0000, 0.3413, 0.5327
+
+
+
+    (2).For coco_54detect_train Dataset
+    1
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=1.26s).
+    Accumulating evaluation results...
+    DONE (t=0.37s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.446
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.696
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.509
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.078
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.304
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.489
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.429
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.564
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.569
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.192
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.451
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.607
+    2
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=5.34s).
+    Accumulating evaluation results...
+    DONE (t=0.58s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.339
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.619
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.344
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.201
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.302
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.454
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.156
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.367
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.480
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.349
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.464
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.578
+    3
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=2.19s).
+    Accumulating evaluation results...
+    DONE (t=0.45s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.614
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.929
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.726
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.297
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.537
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.649
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.393
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.696
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.699
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.444
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.647
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.726
+    4
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=3.05s).
+    Accumulating evaluation results...
+    DONE (t=0.43s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.754
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.979
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.915
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.441
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.636
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.766
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.383
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.790
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.799
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.537
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.682
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.813
+    5
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=1.76s).
+    Accumulating evaluation results...
+    DONE (t=0.37s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.299
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.607
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.256
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.194
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.324
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.405
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.172
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.422
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.449
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.355
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.480
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.531
+    7
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=1.56s).
+    Accumulating evaluation results...
+    DONE (t=0.38s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.363
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.678
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.345
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.184
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.247
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.406
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.225
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.471
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.493
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.329
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.389
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.532
+    10
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=0.71s).
+    Accumulating evaluation results...
+    DONE (t=0.14s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.766
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.965
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.883
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.594
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.763
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.866
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.674
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.795
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.796
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.638
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.799
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.897
+    14
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=2.25s).
+    Accumulating evaluation results...
+    DONE (t=0.47s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.597
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.882
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.683
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.272
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.380
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.629
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.409
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.651
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.662
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.353
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.488
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.690
+    15
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=5.07s).
+    Accumulating evaluation results...
+    DONE (t=1.56s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.439
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.788
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.450
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.112
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.177
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.515
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.333
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.517
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.525
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.229
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.329
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.592
+    16
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=2.19s).
+    Accumulating evaluation results...
+    DONE (t=0.50s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.626
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.875
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.723
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.071
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.252
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.710
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.505
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.663
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.668
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.176
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.362
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.750
+    17
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=11.73s).
+    Accumulating evaluation results...
+    DONE (t=0.69s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.516
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.806
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.564
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.208
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.485
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.670
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.183
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.479
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.570
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.303
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.553
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.717
+    18
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=13.34s).
+    Accumulating evaluation results...
+    DONE (t=2.41s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.630
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.940
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.727
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.216
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.423
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.663
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.242
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.674
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.693
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.345
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.538
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.723
+    24
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=7.14s).
+    Accumulating evaluation results...
+    DONE (t=1.26s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.536
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.909
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.579
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.223
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.415
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.592
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.252
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.606
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.619
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.367
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.529
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.669
+    25
+    Running per image evaluation...
+    Evaluate annotation type *bbox*
+    DONE (t=6.98s).
+    Accumulating evaluation results...
+    DONE (t=1.29s).
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.533
+     Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.882
+     Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.587
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.209
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.354
+     Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.591
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.278
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.600
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.612
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.335
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.480
+     Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.664
+    2020-10-28 10:14:42,823 maskrcnn_benchmark.inference INFO: 
+    Task: bbox
+    AP, AP50, AP75, APs, APm, APl
+    0.5329, 0.8821, 0.5872, 0.2086, 0.3543, 0.5913
+
+    5. FPS
+    (0.046935572808697965 s / img per device)
+    21 FPS
+    Quadro P4000 算力6.1
+    内存耗用
+    247/8118 1015/8118 = 768mb
