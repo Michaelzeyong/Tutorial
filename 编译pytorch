@@ -75,3 +75,5 @@ https://blog.csdn.net/sunshinefcx/article/details/103978651
     sudo pip3 --no-cache-dir install torchvision
     torchvision建议自己编译，pip下载的为0.2版本，0.3版本较为合适
     
+
+    

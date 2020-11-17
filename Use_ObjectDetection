@@ -1,6 +1,10 @@
 Github address: https://github.com/facebookresearch/maskrcnn-benchmark
 
 Architecture
+Install cocoapi:  cd annex/cocoapi/PythonAPI    Use python setup.py build_ext install
+Install apex:     cd annex/apex                 Use python setup.py install --cuda_ext --cpp_ext
+install detection_code                          Use python setup.py build develop
+python interface.py
 
 1.Dataset:
     ObjectDetection
